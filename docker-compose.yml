@@ -1,0 +1,26 @@
+# version: '3.0'
+services:
+  mysqldb:
+      image: mysql:8.0
+      container_name: mysql_container
+      command: --default-authentication-plugin=mysql_native_password
+      restart: unless-stopped
+      environment:
+        MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+        MYSQL_USER: "${MYSQL_USER}"
+        MYSQL_PASSWORD: "${MYSQL_PASSWORD}" 
+        MYSQL_DATABASE: "${MYSQL_DATABASE}"
+        MYSQL_HOST: "${MYSQL_HOST}"
+        SERVICE_TAGS: "dev_service_tag"
+        SERVICE_NAME: "dev_service_name"
+  app:
+    container_name: app_container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    volumes:
+      - ./app
+  
+  
